@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "660676820207",
+    "project_id": "spending-46a67",
+    "storage_bucket": "spending-46a67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660676820207:android:c4dfe69e1eead6f345af1a",
+        "android_client_info": {
+          "package_name": "com.yashagozwan.spending"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660676820207-upiqkj0ql73sg065pqnp6smggcrsqjpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEBAoo8gyqydNzcizO1Nhhr3RoC4CKJXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660676820207-upiqkj0ql73sg065pqnp6smggcrsqjpg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "660676820207-67gnu2b1r3k63aakctlg8alhhg7kuq9m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yashagozwan.spending"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
