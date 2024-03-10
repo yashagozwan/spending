@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending/core/di/di.dart';
+import 'package:spending/presentation/screens/connection/bloc/connection_bloc.dart';
 import 'package:spending/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:spending/presentation/screens/login/bloc/login_bloc.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:spending/presentation/screens/splash/splash_screen.dart';
+
+import 'core/theme/custom_theme.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -20,10 +23,12 @@ class App extends StatelessWidget {
         _provider(getIt<SplashBloc>()),
         _provider(getIt<LoginBloc>()),
         _provider(getIt<HomeBloc>()),
+        _provider(getIt<ConnectionBloc>()),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
+        theme: getIt<CustomTheme>().light,
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

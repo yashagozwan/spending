@@ -49,8 +49,7 @@ class AuthServiceImpl implements AuthService {
       accessToken: googleAuth.accessToken,
     );
 
-    final googleCredential =
-        await _firebaseAuth.signInWithCredential(credential);
+    final googleCredential = await _firebaseAuth.signInWithCredential(credential);
     final user = googleCredential.user;
 
     if (user == null) return null;
@@ -64,40 +63,9 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  Future<UserModel?> signOut() async {
-    final user = await _googleSignIn.signOut();
+  Future<bool> signOut() async {
+    await _googleSignIn.signOut();
     await _firebaseAuth.signOut();
-    if (user == null) return null;
-    return UserModel(
-      id: user.id,
-      name: '${user.displayName}',
-      avatar: '${user.photoUrl}',
-      email: user.email,
-    );
+    return true;
   }
-
-// Future<UserCredential?> signInWithGoogle() async {
-//   final googleUser = await GoogleSignIn().signIn();
-//   final googleAuth = await googleUser?.authentication;
-//
-//   if (googleAuth == null) return null;
-//
-//   final credential = GoogleAuthProvider.credential(
-//     idToken: googleAuth.idToken,
-//     accessToken: googleAuth.accessToken,
-//   );
-//
-//   return FirebaseAuth.instance.signInWithCredential(credential);
-// }
-//
-// Future<void> isSignedIn() async {
-//   final user = FirebaseAuth.instance.currentUser;
-//   _logger.d(user.toString());
-// }
-//
-// Future<void> signOut() async {
-//   final googleUser = await GoogleSignIn().signOut();
-//   await FirebaseAuth.instance.signOut();
-//   _logger.d(googleUser.toString());
-// }
 }

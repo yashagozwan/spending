@@ -24,13 +24,30 @@ class CustomTheme {
     return MaterialColor(color.value, shades);
   }
 
-  Color get primary => _getMaterialColor(const Color(0xFFBF8256));
+  MaterialColor get primary => _getMaterialColor(const Color(0xFFBF8256));
 
   ThemeData get light {
-    final theme = ThemeData(
-      primaryColor: primary,
+    final theme = ThemeData(primarySwatch: primary, fontFamily: 'Poppins');
+
+    const rounded = 14.0;
+
+    final elevatedButtonThemeData = ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.all(16),
+        elevation: 0,
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(rounded),
+          ),
+        ),
+      ),
     );
 
-    return theme.copyWith();
+    return theme.copyWith(
+      elevatedButtonTheme: elevatedButtonThemeData,
+    );
   }
 }

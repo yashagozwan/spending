@@ -7,5 +7,5 @@ abstract class AuthService {
 
   Future<UserModel?> getUser();
 
-  Future<UserModel?> signOut();
+  Future<bool> signOut();
 }

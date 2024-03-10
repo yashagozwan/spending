@@ -15,52 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$LoginEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() signInWithGoogle,
-    required TResult Function() signOut,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? signInWithGoogle,
-    TResult? Function()? signOut,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? signInWithGoogle,
-    TResult Function()? signOut,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoginInitial value) initial,
-    required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
-    required TResult Function(LoginSignOut value) signOut,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginInitial value)? initial,
-    TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult? Function(LoginSignOut value)? signOut,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginInitial value)? initial,
-    TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult Function(LoginSignOut value)? signOut,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
+mixin _$LoginEvent {}
 
 /// @nodoc
 abstract class $LoginEventCopyWith<$Res> {
@@ -114,74 +69,6 @@ class _$LoginInitialImpl implements LoginInitial {
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() signInWithGoogle,
-    required TResult Function() signOut,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? signInWithGoogle,
-    TResult? Function()? signOut,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? signInWithGoogle,
-    TResult Function()? signOut,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoginInitial value) initial,
-    required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
-    required TResult Function(LoginSignOut value) signOut,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginInitial value)? initial,
-    TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult? Function(LoginSignOut value)? signOut,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginInitial value)? initial,
-    TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult Function(LoginSignOut value)? signOut,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class LoginInitial implements LoginEvent {
@@ -194,6 +81,8 @@ abstract class _$$LoginSignInWithGoogleImplCopyWith<$Res> {
           _$LoginSignInWithGoogleImpl value,
           $Res Function(_$LoginSignInWithGoogleImpl) then) =
       __$$LoginSignInWithGoogleImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({BuildContext context});
 }
 
 /// @nodoc
@@ -203,99 +92,61 @@ class __$$LoginSignInWithGoogleImplCopyWithImpl<$Res>
   __$$LoginSignInWithGoogleImplCopyWithImpl(_$LoginSignInWithGoogleImpl _value,
       $Res Function(_$LoginSignInWithGoogleImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? context = null,
+  }) {
+    return _then(_$LoginSignInWithGoogleImpl(
+      context: null == context
+          ? _value.context
+          : context // ignore: cast_nullable_to_non_nullable
+              as BuildContext,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
-  const _$LoginSignInWithGoogleImpl();
+  const _$LoginSignInWithGoogleImpl({required this.context});
+
+  @override
+  final BuildContext context;
 
   @override
   String toString() {
-    return 'LoginEvent.signInWithGoogle()';
+    return 'LoginEvent.signInWithGoogle(context: $context)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginSignInWithGoogleImpl);
+            other is _$LoginSignInWithGoogleImpl &&
+            (identical(other.context, context) || other.context == context));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, context);
 
+  @JsonKey(ignore: true)
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() signInWithGoogle,
-    required TResult Function() signOut,
-  }) {
-    return signInWithGoogle();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? signInWithGoogle,
-    TResult? Function()? signOut,
-  }) {
-    return signInWithGoogle?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? signInWithGoogle,
-    TResult Function()? signOut,
-    required TResult orElse(),
-  }) {
-    if (signInWithGoogle != null) {
-      return signInWithGoogle();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoginInitial value) initial,
-    required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
-    required TResult Function(LoginSignOut value) signOut,
-  }) {
-    return signInWithGoogle(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginInitial value)? initial,
-    TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult? Function(LoginSignOut value)? signOut,
-  }) {
-    return signInWithGoogle?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginInitial value)? initial,
-    TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult Function(LoginSignOut value)? signOut,
-    required TResult orElse(),
-  }) {
-    if (signInWithGoogle != null) {
-      return signInWithGoogle(this);
-    }
-    return orElse();
-  }
+  @pragma('vm:prefer-inline')
+  _$$LoginSignInWithGoogleImplCopyWith<_$LoginSignInWithGoogleImpl>
+      get copyWith => __$$LoginSignInWithGoogleImplCopyWithImpl<
+          _$LoginSignInWithGoogleImpl>(this, _$identity);
 }
 
 abstract class LoginSignInWithGoogle implements LoginEvent {
-  const factory LoginSignInWithGoogle() = _$LoginSignInWithGoogleImpl;
+  const factory LoginSignInWithGoogle({required final BuildContext context}) =
+      _$LoginSignInWithGoogleImpl;
+
+  BuildContext get context;
+  @JsonKey(ignore: true)
+  _$$LoginSignInWithGoogleImplCopyWith<_$LoginSignInWithGoogleImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -332,74 +183,6 @@ class _$LoginSignOutImpl implements LoginSignOut {
 
   @override
   int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() signInWithGoogle,
-    required TResult Function() signOut,
-  }) {
-    return signOut();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? signInWithGoogle,
-    TResult? Function()? signOut,
-  }) {
-    return signOut?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? signInWithGoogle,
-    TResult Function()? signOut,
-    required TResult orElse(),
-  }) {
-    if (signOut != null) {
-      return signOut();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoginInitial value) initial,
-    required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
-    required TResult Function(LoginSignOut value) signOut,
-  }) {
-    return signOut(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(LoginInitial value)? initial,
-    TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult? Function(LoginSignOut value)? signOut,
-  }) {
-    return signOut?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoginInitial value)? initial,
-    TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
-    TResult Function(LoginSignOut value)? signOut,
-    required TResult orElse(),
-  }) {
-    if (signOut != null) {
-      return signOut(this);
-    }
-    return orElse();
-  }
 }
 
 abstract class LoginSignOut implements LoginEvent {
