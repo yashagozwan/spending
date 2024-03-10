@@ -20,18 +20,21 @@ mixin _$LoginEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() signInWithGoogle,
+    required TResult Function() signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? signInWithGoogle,
+    TResult? Function()? signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? signInWithGoogle,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +42,21 @@ mixin _$LoginEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(LoginInitial value) initial,
     required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
+    required TResult Function(LoginSignOut value) signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoginInitial value)? initial,
     TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult? Function(LoginSignOut value)? signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoginInitial value)? initial,
     TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult Function(LoginSignOut value)? signOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,6 +120,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() signInWithGoogle,
+    required TResult Function() signOut,
   }) {
     return initial();
   }
@@ -123,6 +130,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? signInWithGoogle,
+    TResult? Function()? signOut,
   }) {
     return initial?.call();
   }
@@ -132,6 +140,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? signInWithGoogle,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -145,6 +154,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult map<TResult extends Object?>({
     required TResult Function(LoginInitial value) initial,
     required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
+    required TResult Function(LoginSignOut value) signOut,
   }) {
     return initial(this);
   }
@@ -154,6 +164,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoginInitial value)? initial,
     TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult? Function(LoginSignOut value)? signOut,
   }) {
     return initial?.call(this);
   }
@@ -163,6 +174,7 @@ class _$LoginInitialImpl implements LoginInitial {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoginInitial value)? initial,
     TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult Function(LoginSignOut value)? signOut,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -218,6 +230,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() signInWithGoogle,
+    required TResult Function() signOut,
   }) {
     return signInWithGoogle();
   }
@@ -227,6 +240,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? signInWithGoogle,
+    TResult? Function()? signOut,
   }) {
     return signInWithGoogle?.call();
   }
@@ -236,6 +250,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? signInWithGoogle,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
     if (signInWithGoogle != null) {
@@ -249,6 +264,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult map<TResult extends Object?>({
     required TResult Function(LoginInitial value) initial,
     required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
+    required TResult Function(LoginSignOut value) signOut,
   }) {
     return signInWithGoogle(this);
   }
@@ -258,6 +274,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(LoginInitial value)? initial,
     TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult? Function(LoginSignOut value)? signOut,
   }) {
     return signInWithGoogle?.call(this);
   }
@@ -267,6 +284,7 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(LoginInitial value)? initial,
     TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult Function(LoginSignOut value)? signOut,
     required TResult orElse(),
   }) {
     if (signInWithGoogle != null) {
@@ -278,4 +296,112 @@ class _$LoginSignInWithGoogleImpl implements LoginSignInWithGoogle {
 
 abstract class LoginSignInWithGoogle implements LoginEvent {
   const factory LoginSignInWithGoogle() = _$LoginSignInWithGoogleImpl;
+}
+
+/// @nodoc
+abstract class _$$LoginSignOutImplCopyWith<$Res> {
+  factory _$$LoginSignOutImplCopyWith(
+          _$LoginSignOutImpl value, $Res Function(_$LoginSignOutImpl) then) =
+      __$$LoginSignOutImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LoginSignOutImplCopyWithImpl<$Res>
+    extends _$LoginEventCopyWithImpl<$Res, _$LoginSignOutImpl>
+    implements _$$LoginSignOutImplCopyWith<$Res> {
+  __$$LoginSignOutImplCopyWithImpl(
+      _$LoginSignOutImpl _value, $Res Function(_$LoginSignOutImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LoginSignOutImpl implements LoginSignOut {
+  const _$LoginSignOutImpl();
+
+  @override
+  String toString() {
+    return 'LoginEvent.signOut()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LoginSignOutImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() signInWithGoogle,
+    required TResult Function() signOut,
+  }) {
+    return signOut();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? signInWithGoogle,
+    TResult? Function()? signOut,
+  }) {
+    return signOut?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? signInWithGoogle,
+    TResult Function()? signOut,
+    required TResult orElse(),
+  }) {
+    if (signOut != null) {
+      return signOut();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginSignInWithGoogle value) signInWithGoogle,
+    required TResult Function(LoginSignOut value) signOut,
+  }) {
+    return signOut(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult? Function(LoginSignOut value)? signOut,
+  }) {
+    return signOut?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginSignInWithGoogle value)? signInWithGoogle,
+    TResult Function(LoginSignOut value)? signOut,
+    required TResult orElse(),
+  }) {
+    if (signOut != null) {
+      return signOut(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LoginSignOut implements LoginEvent {
+  const factory LoginSignOut() = _$LoginSignOutImpl;
 }

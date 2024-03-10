@@ -7,4 +7,6 @@ abstract class LoginEvent with _$LoginEvent {
   const factory LoginEvent.initial() = LoginInitial;
 
   const factory LoginEvent.signInWithGoogle() = LoginSignInWithGoogle;
+
+  const factory LoginEvent.signOut() = LoginSignOut;
 }

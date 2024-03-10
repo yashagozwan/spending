@@ -1,30 +1,11 @@
-import 'package:injectable/injectable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
+import 'package:spending/domain/models/user/user_model.dart';
 
-@lazySingleton
-class AuthService {
-  final Logger _logger;
+abstract class AuthService {
+  Future<UserModel?> signInWithGoogle();
 
-  AuthService(this._logger);
+  Future<bool> isLoggedId();
 
-  Future<UserCredential?> signInWithGoogle() async {
-    final googleUser = await GoogleSignIn().signIn();
-    final googleAuth = await googleUser?.authentication;
+  Future<UserModel?> getUser();
 
-    if (googleAuth == null) return null;
-
-    final credential = GoogleAuthProvider.credential(
-      idToken: googleAuth?.idToken,
-      accessToken: googleAuth?.accessToken,
-    );
-
-    return FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
-  Future<void> isSignedIn() async {
-    final user = FirebaseAuth.instance.currentUser;
-    _logger.d(user.toString());
-  }
+  Future<UserModel?> signOut();
 }

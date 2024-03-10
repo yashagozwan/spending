@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "660676820207-512q3eqjlfs1bqomvhu52prh3dj8um8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yashagozwan.spending",
+            "certificate_hash": "b903d72591192a2727f9e03dedf0820b7a2ab534"
+          }
+        },
+        {
           "client_id": "660676820207-upiqkj0ql73sg065pqnp6smggcrsqjpg.apps.googleusercontent.com",
           "client_type": 3
         }
