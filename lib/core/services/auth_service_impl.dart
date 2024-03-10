@@ -6,7 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'auth_service.dart';
 
-@named
 @LazySingleton(as: AuthService)
 class AuthServiceImpl implements AuthService {
   final Logger _logger;
@@ -49,7 +48,8 @@ class AuthServiceImpl implements AuthService {
       accessToken: googleAuth.accessToken,
     );
 
-    final googleCredential = await _firebaseAuth.signInWithCredential(credential);
+    final googleCredential =
+        await _firebaseAuth.signInWithCredential(credential);
     final user = googleCredential.user;
 
     if (user == null) return null;

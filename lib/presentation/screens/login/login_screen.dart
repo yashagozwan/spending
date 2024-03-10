@@ -5,12 +5,9 @@ import 'package:spending/core/constants/image_asset_path.dart';
 import 'package:spending/core/constants/status.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_bloc.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_event.dart';
-import 'package:spending/presentation/screens/home/bloc/home_event.dart';
 import 'package:spending/presentation/screens/login/bloc/login_bloc.dart';
 import 'package:spending/presentation/screens/login/bloc/login_event.dart';
 import 'package:spending/presentation/screens/login/bloc/login_state.dart';
-import 'package:spending/presentation/screens/splash/bloc/splash_bloc.dart';
-import 'package:spending/presentation/screens/splash/bloc/splash_event.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

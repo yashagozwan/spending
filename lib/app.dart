@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending/core/di/di.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_bloc.dart';
@@ -18,6 +19,16 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = getIt<CustomTheme>().light;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: theme.scaffoldBackgroundColor,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: theme.scaffoldBackgroundColor,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
+
     return MultiBlocProvider(
       providers: [
         _provider(getIt<SplashBloc>()),
@@ -26,7 +37,7 @@ class App extends StatelessWidget {
         _provider(getIt<ConnectionBloc>()),
       ],
       child: MaterialApp(
-        theme: getIt<CustomTheme>().light,
+        theme: theme,
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
       ),

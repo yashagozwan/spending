@@ -3,9 +3,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:spending/core/services/connection_service.dart';
-import 'dart:developer' as dev;
 
-@named
 @LazySingleton(as: ConnectionService)
 class ConnectionServiceImpl implements ConnectionService {
   final Connectivity _connectivity;

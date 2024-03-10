@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:spending/app.dart';
 import 'package:spending/core/di/di.dart';
+import 'package:spending/core/services/notification_service.dart';
 import 'package:spending/firebase_options.dart';
 
 void main() async {
@@ -10,5 +11,6 @@ void main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await configureDependencies();
+  getIt<NotificationService>().init();
   runApp(const App());
 }

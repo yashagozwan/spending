@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' show Navigator, MaterialPageRoute;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spending/core/services/connection_service.dart';
-import 'package:spending/core/services/connection_status_impl.dart';
 import 'package:injectable/injectable.dart';
 import 'package:spending/core/utils/toast.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_event.dart';
@@ -13,7 +12,7 @@ class ConnectionBloc extends Bloc<ConnectionEvent, ConnectionState> {
   final ConnectionService _connectionService;
 
   ConnectionBloc(
-    @Named.from(ConnectionServiceImpl) this._connectionService,
+    this._connectionService,
   ) : super(const ConnectionState()) {
     on<ConnectionInitial>(_initial);
     on<ConnectionSetContext>(_setContext);
