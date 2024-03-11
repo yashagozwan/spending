@@ -7,6 +7,7 @@ import 'package:spending/presentation/screens/home/home_screen.dart';
 import 'package:spending/presentation/screens/login/login_screen.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_state.dart';
+import 'package:spending/presentation/screens/sync/sync_screen.dart';
 
 @lazySingleton
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
@@ -35,7 +36,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     if (user != null) {
       Navigator.pushAndRemoveUntil(event.context, MaterialPageRoute(
         builder: (context) {
-          return const HomeScreen();
+          return const SyncScreen();
         },
       ), (route) => false);
     } else {

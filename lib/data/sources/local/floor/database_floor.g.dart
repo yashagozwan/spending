@@ -63,6 +63,8 @@ class _$DatabaseFloor extends DatabaseFloor {
 
   UserDAO? _userDAOInstance;
 
+  SpendingDAO? _spendingDAOInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -86,6 +88,8 @@ class _$DatabaseFloor extends DatabaseFloor {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `users` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `avatar` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `spending` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `user_id` TEXT NOT NULL, `created_at` TEXT NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -96,6 +100,11 @@ class _$DatabaseFloor extends DatabaseFloor {
   @override
   UserDAO get userDAO {
     return _userDAOInstance ??= _$UserDAO(database, changeListener);
+  }
+
+  @override
+  SpendingDAO get spendingDAO {
+    return _spendingDAOInstance ??= _$SpendingDAO(database, changeListener);
   }
 }
 
@@ -140,5 +149,96 @@ class _$UserDAO extends UserDAO {
   @override
   Future<void> insertOne(UserFloor user) async {
     await _userFloorInsertionAdapter.insert(user, OnConflictStrategy.fail);
+  }
+}
+
+class _$SpendingDAO extends SpendingDAO {
+  _$SpendingDAO(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _spendingFloorInsertionAdapter = InsertionAdapter(
+            database,
+            'spending',
+            (SpendingFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                }),
+        _spendingFloorUpdateAdapter = UpdateAdapter(
+            database,
+            'spending',
+            ['id'],
+            (SpendingFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                }),
+        _spendingFloorDeletionAdapter = DeletionAdapter(
+            database,
+            'spending',
+            ['id'],
+            (SpendingFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<SpendingFloor> _spendingFloorInsertionAdapter;
+
+  final UpdateAdapter<SpendingFloor> _spendingFloorUpdateAdapter;
+
+  final DeletionAdapter<SpendingFloor> _spendingFloorDeletionAdapter;
+
+  @override
+  Future<SpendingFloor?> findOne(String id) async {
+    return _queryAdapter.query('SELECT * FROM spending WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => SpendingFloor(
+            id: row['id'] as String,
+            title: row['title'] as String,
+            userId: row['user_id'] as String,
+            createdAt: row['created_at'] as String),
+        arguments: [id]);
+  }
+
+  @override
+  Future<List<SpendingFloor>> findAll() async {
+    return _queryAdapter.queryList('SELECT * FROM spending',
+        mapper: (Map<String, Object?> row) => SpendingFloor(
+            id: row['id'] as String,
+            title: row['title'] as String,
+            userId: row['user_id'] as String,
+            createdAt: row['created_at'] as String));
+  }
+
+  @override
+  Future<void> removeAll() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM spending');
+  }
+
+  @override
+  Future<void> insertOne(SpendingFloor spending) async {
+    await _spendingFloorInsertionAdapter.insert(
+        spending, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateOne(SpendingFloor spending) async {
+    await _spendingFloorUpdateAdapter.update(
+        spending, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> removeOne(SpendingFloor spending) async {
+    await _spendingFloorDeletionAdapter.delete(spending);
   }
 }

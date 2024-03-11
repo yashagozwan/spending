@@ -7,6 +7,7 @@ import 'package:spending/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:spending/presentation/screens/login/bloc/login_bloc.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:spending/presentation/screens/splash/splash_screen.dart';
+import 'package:spending/presentation/screens/sync/bloc/sync_bloc.dart';
 
 import 'core/theme/custom_theme.dart';
 
@@ -35,6 +36,7 @@ class App extends StatelessWidget {
         _provider(getIt<LoginBloc>()),
         _provider(getIt<HomeBloc>()),
         _provider(getIt<ConnectionBloc>()),
+        _provider(getIt<SyncBloc>()),
       ],
       child: MaterialApp(
         theme: theme,

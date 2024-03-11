@@ -5,11 +5,13 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:spending/core/constants/status.dart';
 import 'package:spending/core/services/auth_service.dart';
+import 'package:spending/core/utils/toast.dart';
 import 'package:spending/core/utils/utils.dart';
 import 'package:spending/domain/usecases/user_usecase.dart';
 import 'package:spending/presentation/screens/home/home_screen.dart';
 import 'package:spending/presentation/screens/login/bloc/login_event.dart';
 import 'package:spending/presentation/screens/login/bloc/login_state.dart';
+import 'package:spending/presentation/screens/sync/sync_screen.dart';
 
 @lazySingleton
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -38,21 +40,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (!context.mounted) return;
 
       if (!result) {
-        return Utils.showMessage(
-          context,
-          message: 'Authentication failed',
-        );
+        return Toast.show('Authentication failed', isError: true);
       }
 
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
         builder: (context) {
-          return const HomeScreen();
+          return const SyncScreen();
         },
       ), (route) => false);
 
       status = Status.success;
-    } on FirebaseAuthException catch (e) {
+      Toast.show('Authentication successful');
+    } catch (e) {
       status = Status.failure;
+      Toast.show('$e', isError: true);
     } finally {
       emit(state.copyWith(status: status));
     }

@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 @lazySingleton
 class CustomTheme {
-  MaterialColor _getMaterialColor(Color color) {
+  static MaterialColor _getMaterialColor(Color color) {
     final int red = color.red;
     final int green = color.green;
     final int blue = color.blue;
@@ -26,6 +26,9 @@ class CustomTheme {
 
   MaterialColor get primary => _getMaterialColor(const Color(0xFFBF8256));
 
+  static MaterialColor get secondary =>
+      _getMaterialColor(const Color(0xFF3F0F33));
+
   ThemeData get light {
     final theme = ThemeData(primarySwatch: primary, fontFamily: 'Poppins');
 
@@ -46,8 +49,36 @@ class CustomTheme {
       ),
     );
 
+    final outlinedButtonThemeData = OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        padding: const EdgeInsets.all(16),
+        side: BorderSide(color: theme.primaryColor),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(rounded),
+          ),
+        ),
+      ),
+    );
+
+    final textButtonThemeData = TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(rounded),
+        ),
+      ),
+    );
+
     return theme.copyWith(
       elevatedButtonTheme: elevatedButtonThemeData,
+      textButtonTheme: textButtonThemeData,
+      outlinedButtonTheme: outlinedButtonThemeData,
     );
   }
 }

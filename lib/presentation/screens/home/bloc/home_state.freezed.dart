@@ -17,6 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$HomeState {
   Status get status => throw _privateConstructorUsedError;
+  UserModel get user => throw _privateConstructorUsedError;
+  List<SpendingModel> get spendings => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -28,7 +30,9 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({Status status});
+  $Res call({Status status, UserModel user, List<SpendingModel> spendings});
+
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -45,13 +49,31 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @override
   $Res call({
     Object? status = null,
+    Object? user = null,
+    Object? spendings = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      spendings: null == spendings
+          ? _value.spendings
+          : spendings // ignore: cast_nullable_to_non_nullable
+              as List<SpendingModel>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserModelCopyWith<$Res> get user {
+    return $UserModelCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -63,7 +85,10 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status});
+  $Res call({Status status, UserModel user, List<SpendingModel> spendings});
+
+  @override
+  $UserModelCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -78,12 +103,22 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? user = null,
+    Object? spendings = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Status,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as UserModel,
+      spendings: null == spendings
+          ? _value._spendings
+          : spendings // ignore: cast_nullable_to_non_nullable
+              as List<SpendingModel>,
     ));
   }
 }
@@ -91,15 +126,30 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.status = Status.initial});
+  const _$HomeStateImpl(
+      {this.status = Status.initial,
+      this.user = const UserModel(),
+      final List<SpendingModel> spendings = const []})
+      : _spendings = spendings;
 
   @override
   @JsonKey()
   final Status status;
+  @override
+  @JsonKey()
+  final UserModel user;
+  final List<SpendingModel> _spendings;
+  @override
+  @JsonKey()
+  List<SpendingModel> get spendings {
+    if (_spendings is EqualUnmodifiableListView) return _spendings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_spendings);
+  }
 
   @override
   String toString() {
-    return 'HomeState(status: $status)';
+    return 'HomeState(status: $status, user: $user, spendings: $spendings)';
   }
 
   @override
@@ -107,11 +157,15 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.user, user) || other.user == user) &&
+            const DeepCollectionEquality()
+                .equals(other._spendings, _spendings));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status);
+  int get hashCode => Object.hash(runtimeType, status, user,
+      const DeepCollectionEquality().hash(_spendings));
 
   @JsonKey(ignore: true)
   @override
@@ -121,10 +175,17 @@ class _$HomeStateImpl implements _HomeState {
 }
 
 abstract class _HomeState implements HomeState {
-  const factory _HomeState({final Status status}) = _$HomeStateImpl;
+  const factory _HomeState(
+      {final Status status,
+      final UserModel user,
+      final List<SpendingModel> spendings}) = _$HomeStateImpl;
 
   @override
   Status get status;
+  @override
+  UserModel get user;
+  @override
+  List<SpendingModel> get spendings;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>
