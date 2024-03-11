@@ -16,5 +16,7 @@ class HomeState with _$HomeState {
     @Default(Status.initial) Status status,
     @Default(UserModel()) UserModel user,
     @Default([]) List<SpendingModel> spendings,
+    @Default('') String spendingTitle,
+    @Default('') String dateIso,
   }) = _HomeState;
 }

@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spending/core/constants/image_asset_path.dart';
 import 'package:spending/core/constants/status.dart';
 import 'package:spending/core/theme/custom_theme.dart';
+import 'package:spending/core/utils/utils.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_bloc.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_event.dart';
 import 'package:spending/presentation/screens/home/bloc/home_bloc.dart';
@@ -12,14 +13,46 @@ import 'package:spending/presentation/screens/home/bloc/home_state.dart';
 import 'package:spending/presentation/widgets/image_widget.dart';
 import 'package:spending/presentation/widgets/spacer_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    context.read<ConnectionBloc>().add(ConnectionSetContext(context: context));
-    final bloc = context.read<HomeBloc>()..add(const HomeStarted());
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  late final HomeBloc bloc;
+  final _titleController = TextEditingController();
+  final _dateController = TextEditingController();
+
+  void _initial() {
+    context.read<ConnectionBloc>().add(ConnectionSetContext(context: context));
+    bloc = context.read<HomeBloc>()..add(const HomeStarted());
+
+    _titleController.addListener(() {
+      bloc.add(HomeSetSpendingTitle(value: _titleController.text.trim()));
+    });
+
+    _dateController.addListener(() {
+      bloc.add(HomeSetDateIso(value: _dateController.text));
+    });
+  }
+
+  @override
+  void initState() {
+    _initial();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,7 +123,13 @@ class HomeScreen extends StatelessWidget {
                     child: _boxButton(
                       title: 'Create Report',
                       onPressed: () {
-                        bloc.add(const HomeCreateReport());
+                        bloc.add(
+                          HomeShowCreateReportBottomSheet(
+                            context: context,
+                            dateController: _dateController,
+                            titleController: _titleController,
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -124,7 +163,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: _spendingsWidget(bloc),
+              child: _spendingsWidget(),
             ),
           ],
         ),
@@ -132,40 +171,48 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _spendingsWidget(HomeBloc bloc) {
+  Widget _spendingsWidget() {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         final spendings = state.spendings;
 
         if (spendings.isEmpty) {
           return Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Image.asset(
-                    ImageAssetPath.emptyBox,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: Image.asset(
+                      ImageAssetPath.emptyBox,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'No record of expenditure',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                  const SizedBox(height: 16),
+                  const Text(
+                    'No record of expenditure',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                OutlinedButton.icon(
-                  onPressed: () {
-                    bloc.add(const HomeCreateReport());
-                  },
-                  icon: const FaIcon(FontAwesomeIcons.circlePlus),
-                  label: const Text('Create'),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      bloc.add(
+                        HomeShowCreateReportBottomSheet(
+                          context: context,
+                          titleController: _titleController,
+                          dateController: _dateController,
+                        ),
+                      );
+                    },
+                    icon: const FaIcon(FontAwesomeIcons.circlePlus),
+                    label: const Text('Create'),
+                  ),
+                ],
+              ),
             ),
           );
         }
@@ -176,6 +223,8 @@ class HomeScreen extends StatelessWidget {
             horizontal: 24,
           ),
           itemBuilder: (context, index) {
+            final spending = spendings[index];
+
             return Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
@@ -189,16 +238,16 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'My Spending',
+                          spending.title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                             color: CustomTheme.secondary,
                           ),
                         ),
-                        const Text(
-                          '20 Mei 2023',
-                          style: TextStyle(
+                        Text(
+                          Utils.dateFormat(spending.createdAt),
+                          style: const TextStyle(
                             fontSize: 12,
                           ),
                         ),

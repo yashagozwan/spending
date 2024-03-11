@@ -154,3 +154,117 @@ class _$HomeCreateReportImpl implements HomeCreateReport {
 abstract class HomeCreateReport implements HomeEvent {
   const factory HomeCreateReport() = _$HomeCreateReportImpl;
 }
+
+/// @nodoc
+
+class _$HomeSetSpendingTitleImpl implements HomeSetSpendingTitle {
+  const _$HomeSetSpendingTitleImpl({required this.value});
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'HomeEvent.setSpendingTitle(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HomeSetSpendingTitleImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+}
+
+abstract class HomeSetSpendingTitle implements HomeEvent {
+  const factory HomeSetSpendingTitle({required final String value}) =
+      _$HomeSetSpendingTitleImpl;
+
+  String get value;
+}
+
+/// @nodoc
+
+class _$HomeSetDateIsoImpl implements HomeSetDateIso {
+  const _$HomeSetDateIsoImpl({required this.value});
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'HomeEvent.setDateIso(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HomeSetDateIsoImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+}
+
+abstract class HomeSetDateIso implements HomeEvent {
+  const factory HomeSetDateIso({required final String value}) =
+      _$HomeSetDateIsoImpl;
+
+  String get value;
+}
+
+/// @nodoc
+
+class _$HomeShowCreateReportBottomSheetImpl
+    implements HomeShowCreateReportBottomSheet {
+  const _$HomeShowCreateReportBottomSheetImpl(
+      {required this.context,
+      required this.titleController,
+      required this.dateController});
+
+  @override
+  final BuildContext context;
+  @override
+  final TextEditingController titleController;
+  @override
+  final TextEditingController dateController;
+
+  @override
+  String toString() {
+    return 'HomeEvent.showCreateReportBottomSheet(context: $context, titleController: $titleController, dateController: $dateController)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$HomeShowCreateReportBottomSheetImpl &&
+            (identical(other.context, context) || other.context == context) &&
+            (identical(other.titleController, titleController) ||
+                other.titleController == titleController) &&
+            (identical(other.dateController, dateController) ||
+                other.dateController == dateController));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, context, titleController, dateController);
+}
+
+abstract class HomeShowCreateReportBottomSheet implements HomeEvent {
+  const factory HomeShowCreateReportBottomSheet(
+          {required final BuildContext context,
+          required final TextEditingController titleController,
+          required final TextEditingController dateController}) =
+      _$HomeShowCreateReportBottomSheetImpl;
+
+  BuildContext get context;
+  TextEditingController get titleController;
+  TextEditingController get dateController;
+}

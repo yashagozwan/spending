@@ -19,6 +19,8 @@ mixin _$HomeState {
   Status get status => throw _privateConstructorUsedError;
   UserModel get user => throw _privateConstructorUsedError;
   List<SpendingModel> get spendings => throw _privateConstructorUsedError;
+  String get spendingTitle => throw _privateConstructorUsedError;
+  String get dateIso => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -30,7 +32,12 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({Status status, UserModel user, List<SpendingModel> spendings});
+  $Res call(
+      {Status status,
+      UserModel user,
+      List<SpendingModel> spendings,
+      String spendingTitle,
+      String dateIso});
 
   $UserModelCopyWith<$Res> get user;
 }
@@ -51,6 +58,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? status = null,
     Object? user = null,
     Object? spendings = null,
+    Object? spendingTitle = null,
+    Object? dateIso = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -65,6 +74,14 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.spendings
           : spendings // ignore: cast_nullable_to_non_nullable
               as List<SpendingModel>,
+      spendingTitle: null == spendingTitle
+          ? _value.spendingTitle
+          : spendingTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      dateIso: null == dateIso
+          ? _value.dateIso
+          : dateIso // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -85,7 +102,12 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, UserModel user, List<SpendingModel> spendings});
+  $Res call(
+      {Status status,
+      UserModel user,
+      List<SpendingModel> spendings,
+      String spendingTitle,
+      String dateIso});
 
   @override
   $UserModelCopyWith<$Res> get user;
@@ -105,6 +127,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? user = null,
     Object? spendings = null,
+    Object? spendingTitle = null,
+    Object? dateIso = null,
   }) {
     return _then(_$HomeStateImpl(
       status: null == status
@@ -119,6 +143,14 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._spendings
           : spendings // ignore: cast_nullable_to_non_nullable
               as List<SpendingModel>,
+      spendingTitle: null == spendingTitle
+          ? _value.spendingTitle
+          : spendingTitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      dateIso: null == dateIso
+          ? _value.dateIso
+          : dateIso // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -129,7 +161,9 @@ class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl(
       {this.status = Status.initial,
       this.user = const UserModel(),
-      final List<SpendingModel> spendings = const []})
+      final List<SpendingModel> spendings = const [],
+      this.spendingTitle = '',
+      this.dateIso = ''})
       : _spendings = spendings;
 
   @override
@@ -148,8 +182,15 @@ class _$HomeStateImpl implements _HomeState {
   }
 
   @override
+  @JsonKey()
+  final String spendingTitle;
+  @override
+  @JsonKey()
+  final String dateIso;
+
+  @override
   String toString() {
-    return 'HomeState(status: $status, user: $user, spendings: $spendings)';
+    return 'HomeState(status: $status, user: $user, spendings: $spendings, spendingTitle: $spendingTitle, dateIso: $dateIso)';
   }
 
   @override
@@ -160,12 +201,15 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.user, user) || other.user == user) &&
             const DeepCollectionEquality()
-                .equals(other._spendings, _spendings));
+                .equals(other._spendings, _spendings) &&
+            (identical(other.spendingTitle, spendingTitle) ||
+                other.spendingTitle == spendingTitle) &&
+            (identical(other.dateIso, dateIso) || other.dateIso == dateIso));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, status, user,
-      const DeepCollectionEquality().hash(_spendings));
+      const DeepCollectionEquality().hash(_spendings), spendingTitle, dateIso);
 
   @JsonKey(ignore: true)
   @override
@@ -178,7 +222,9 @@ abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final Status status,
       final UserModel user,
-      final List<SpendingModel> spendings}) = _$HomeStateImpl;
+      final List<SpendingModel> spendings,
+      final String spendingTitle,
+      final String dateIso}) = _$HomeStateImpl;
 
   @override
   Status get status;
@@ -186,6 +232,10 @@ abstract class _HomeState implements HomeState {
   UserModel get user;
   @override
   List<SpendingModel> get spendings;
+  @override
+  String get spendingTitle;
+  @override
+  String get dateIso;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

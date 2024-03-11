@@ -9,6 +9,8 @@ abstract class SpendingUseCase {
 
   Future<bool> insertOne(SpendingModel spending);
 
+  Future<bool> insertOneNetwork(SpendingModel spending);
+
   Future<bool> removeOne(SpendingModel spending);
 
   Future<bool> updateOne(SpendingModel spending);

@@ -18,10 +18,16 @@ class SpendingRepositoryImpl implements SpendingRepository {
   );
 
   @override
-  Future<List<SpendingModel>> findAll() => _local.findAll();
+  Future<List<SpendingModel>> findAll() async {
+    final spendings = await _local.findAll();
+    spendings.sort((b, a) =>
+        DateTime.parse(a.createdAt).compareTo(DateTime.parse(b.createdAt)));
+    return spendings;
+  }
 
   @override
   Future<List<SpendingModel>> findAllRemote() async {
+    await _local.removeAll();
     final userId = (await _userLocalDataSource.getUser())!.id;
     return _remote.findAll(userId);
   }
@@ -34,8 +40,7 @@ class SpendingRepositoryImpl implements SpendingRepository {
   @override
   Future<bool> insertOne(SpendingModel spending) async {
     try {
-      final mSpending = await _remote.insertOne(spending);
-      await _local.insertOne(mSpending);
+      await _local.insertOne(spending);
       return true;
     } catch (_) {
       return false;
@@ -58,6 +63,17 @@ class SpendingRepositoryImpl implements SpendingRepository {
     try {
       await _local.updateOne(spending);
       await _remote.updateOne(spending);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> insertOneNetwork(SpendingModel spending) async {
+    try {
+      final mSpending = await _remote.insertOne(spending);
+      await _local.insertOne(mSpending);
       return true;
     } catch (_) {
       return false;

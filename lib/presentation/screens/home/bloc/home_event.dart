@@ -5,10 +5,11 @@ part 'home_event.freezed.dart';
 
 @Freezed(
   copyWith: false,
-  makeCollectionsUnmodifiable: true,
   when: FreezedWhenOptions.none,
-  toJson: false,
   map: FreezedMapOptions.none,
+  makeCollectionsUnmodifiable: true,
+  toJson: false,
+  fromJson: false,
 )
 abstract class HomeEvent with _$HomeEvent {
   const factory HomeEvent.initial() = HomeInitial;
@@ -24,4 +25,18 @@ abstract class HomeEvent with _$HomeEvent {
   }) = HomeShowUserDetailBottomSheet;
 
   const factory HomeEvent.createReport() = HomeCreateReport;
+
+  const factory HomeEvent.setSpendingTitle({
+    required String value,
+  }) = HomeSetSpendingTitle;
+
+  const factory HomeEvent.setDateIso({
+    required String value,
+  }) = HomeSetDateIso;
+
+  const factory HomeEvent.showCreateReportBottomSheet({
+    required final BuildContext context,
+    required final TextEditingController titleController,
+    required final TextEditingController dateController,
+  }) = HomeShowCreateReportBottomSheet;
 }

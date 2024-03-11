@@ -38,4 +38,9 @@ class SpendingInteractor implements SpendingUseCase {
   Future<List<SpendingModel>> findAllRemote() {
     return _repository.findAllRemote();
   }
+
+  @override
+  Future<bool> insertOneNetwork(SpendingModel spending) {
+    return _repository.insertOneNetwork(spending);
+  }
 }

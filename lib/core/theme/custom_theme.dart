@@ -33,11 +33,11 @@ class CustomTheme {
     final theme = ThemeData(primarySwatch: primary, fontFamily: 'Poppins');
 
     const rounded = 14.0;
+    const edgeInsets = EdgeInsets.symmetric(vertical: 10, horizontal: 16);
 
     final elevatedButtonThemeData = ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(16),
-        elevation: 0,
+        padding: edgeInsets,
         textStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -54,7 +54,7 @@ class CustomTheme {
         textStyle: const TextStyle(
           fontWeight: FontWeight.bold,
         ),
-        padding: const EdgeInsets.all(16),
+        padding: edgeInsets,
         side: BorderSide(color: theme.primaryColor),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -75,10 +75,21 @@ class CustomTheme {
       ),
     );
 
+    final borderRadius = BorderRadius.circular(rounded);
+
+    final inputDecorationTheme = InputDecorationTheme(
+      contentPadding: edgeInsets.copyWith(top: 16, bottom: 16),
+      isDense: true,
+      border: OutlineInputBorder(
+        borderRadius: borderRadius,
+      ),
+    );
+
     return theme.copyWith(
       elevatedButtonTheme: elevatedButtonThemeData,
       textButtonTheme: textButtonThemeData,
       outlinedButtonTheme: outlinedButtonThemeData,
+      inputDecorationTheme: inputDecorationTheme,
     );
   }
 }

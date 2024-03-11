@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   Utils._();
@@ -12,5 +13,9 @@ class Utils {
         content: Text(message),
       ),
     );
+  }
+
+  static String dateFormat(String createdAt) {
+    return DateFormat("dd-MM-yyyy").format(DateTime.parse(createdAt));
   }
 }
