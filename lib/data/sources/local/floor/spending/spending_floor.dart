@@ -6,6 +6,7 @@ import 'package:spending/data/sources/local/floor/user/user_floor.dart';
     childColumns: ['user_id'],
     parentColumns: ['id'],
     entity: UserFloor,
+    onDelete: ForeignKeyAction.cascade,
   )
 ])
 class SpendingFloor {

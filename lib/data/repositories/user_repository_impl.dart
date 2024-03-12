@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:spending/data/sources/local/expense_local_data_source.dart';
 import 'package:spending/data/sources/local/spending_local_data_source.dart';
 import 'package:spending/data/sources/local/user_local_data_source.dart';
 import 'package:spending/data/sources/remote/user_remote_data_source.dart';
@@ -10,11 +11,13 @@ class UserRepositoryImpl implements UserRepository {
   final UserLocalDataSource _local;
   final UserRemoteDataSource _remote;
   final SpendingLocalDataSource _spendingLocal;
+  final ExpenseLocalDataSource _expenseLocal;
 
   UserRepositoryImpl(
     this._local,
     this._remote,
     this._spendingLocal,
+    this._expenseLocal,
   );
 
   @override
@@ -29,7 +32,8 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<bool> signOut() async {
-    return await _spendingLocal.removeAll() &&
+    return await _expenseLocal.removeAll() &&
+        await _spendingLocal.removeAll() &&
         await _local.signOut() &&
         await _remote.signOut();
   }
