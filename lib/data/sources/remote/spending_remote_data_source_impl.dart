@@ -1,18 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
-import 'package:spending/data/sources/local/user_local_data_source.dart';
 import 'package:spending/data/sources/remote/spending_remote_data_source.dart';
 import 'package:spending/domain/models/spending/spending_model.dart';
 
 @LazySingleton(as: SpendingRemoteDataSource)
 class SpendingRemoteDataSourceImpl implements SpendingRemoteDataSource {
   final FirebaseFirestore _firestore;
-  final Logger _logger;
 
   SpendingRemoteDataSourceImpl(
     this._firestore,
-    this._logger,
   );
 
   CollectionReference get collection => _firestore.collection('spending');
@@ -20,7 +16,8 @@ class SpendingRemoteDataSourceImpl implements SpendingRemoteDataSource {
   @override
   Future<List<SpendingModel>> findAll(String userId) async {
     try {
-      final snapshot = await collection.where('user_id', isEqualTo: userId).get();
+      final snapshot =
+          await collection.where('user_id', isEqualTo: userId).get();
       return snapshot.docs
           .map((e) => SpendingModel.fromJson(e.data() as Map<String, dynamic>))
           .toList();

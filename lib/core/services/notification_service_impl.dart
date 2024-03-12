@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -20,21 +22,28 @@ class NotificationServiceImpl implements NotificationService {
     // TODO: implement foreground
   }
 
+  Future<Uint8List> _getByteIcon() async {
+    final byteData = await rootBundle.load('assets/images/app_icon.png');
+    return Uint8List.view(byteData.buffer);
+  }
+
   @override
   void showNotification({
     required int id,
     required String title,
     required String body,
     String? payload,
-  }) {
-    const android = AndroidNotificationDetails(
+  }) async {
+    final android = AndroidNotificationDetails(
       'channel_id',
       'channel_name',
       priority: Priority.max,
+      importance: Importance.high,
+      largeIcon: ByteArrayAndroidBitmap(await _getByteIcon()),
     );
 
     const iOS = DarwinNotificationDetails();
-    const details = NotificationDetails(android: android, iOS: iOS);
+    final details = NotificationDetails(android: android, iOS: iOS);
     _plugin.show(id, title, body, details, payload: payload);
   }
 

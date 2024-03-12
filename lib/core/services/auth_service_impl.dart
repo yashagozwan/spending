@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:logger/logger.dart';
 import 'package:spending/domain/models/user/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -8,13 +7,11 @@ import 'auth_service.dart';
 
 @LazySingleton(as: AuthService)
 class AuthServiceImpl implements AuthService {
-  final Logger _logger;
   final GoogleSignIn _googleSignIn;
 
   final FirebaseAuth _firebaseAuth;
 
   AuthServiceImpl(
-    this._logger,
     this._googleSignIn,
     this._firebaseAuth,
   );

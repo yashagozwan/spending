@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:injectable/injectable.dart';
 import 'package:spending/domain/usecases/user_usecase.dart';
-import 'package:spending/presentation/screens/home/home_screen.dart';
 import 'package:spending/presentation/screens/login/login_screen.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_event.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_state.dart';

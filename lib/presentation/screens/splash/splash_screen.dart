@@ -20,8 +20,8 @@ class SplashScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 200,
-              height: 200,
+              width: 150,
+              height: 150,
               child: Image.asset(
                 ImageAssetPath.hourglass,
               ),

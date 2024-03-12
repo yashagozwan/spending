@@ -16,6 +16,6 @@ class Utils {
   }
 
   static String dateFormat(String createdAt) {
-    return DateFormat("dd-MM-yyyy").format(DateTime.parse(createdAt));
+    return DateFormat("dd MMMM yyyy").format(DateTime.parse(createdAt));
   }
 }

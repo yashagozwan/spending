@@ -18,4 +18,8 @@ class ImageAssetPath {
   static String get syncFolder => _getPath('sync_folder.png');
 
   static String get hourglass => _getPath('hourglass.png');
+
+  static String get deleteFile => _getPath('file.png');
+
+  static String get logout => _getPath('log_out.png');
 }

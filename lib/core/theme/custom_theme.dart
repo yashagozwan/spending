@@ -24,7 +24,8 @@ class CustomTheme {
     return MaterialColor(color.value, shades);
   }
 
-  MaterialColor get primary => _getMaterialColor(const Color(0xFFBF8256));
+  static MaterialColor get primary =>
+      _getMaterialColor(const Color(0xFFBF8256));
 
   static MaterialColor get secondary =>
       _getMaterialColor(const Color(0xFF3F0F33));
@@ -85,11 +86,17 @@ class CustomTheme {
       ),
     );
 
+    final dialogTheme = DialogTheme(
+        shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(rounded + 10),
+    ));
+
     return theme.copyWith(
       elevatedButtonTheme: elevatedButtonThemeData,
       textButtonTheme: textButtonThemeData,
       outlinedButtonTheme: outlinedButtonThemeData,
       inputDecorationTheme: inputDecorationTheme,
+      dialogTheme: dialogTheme,
     );
   }
 }

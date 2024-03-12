@@ -18,7 +18,7 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:google_sign_in/google_sign_in.dart' as _i9;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:logger/logger.dart' as _i10;
-import 'package:spending/core/di/register_module.dart' as _i41;
+import 'package:spending/core/di/register_module.dart' as _i42;
 import 'package:spending/core/services/auth_service.dart' as _i18;
 import 'package:spending/core/services/auth_service_impl.dart' as _i19;
 import 'package:spending/core/services/connection_service.dart' as _i20;
@@ -59,6 +59,8 @@ import 'package:spending/presentation/screens/connection/bloc/connection_bloc.da
 import 'package:spending/presentation/screens/home/bloc/home_bloc.dart' as _i40;
 import 'package:spending/presentation/screens/login/bloc/login_bloc.dart'
     as _i33;
+import 'package:spending/presentation/screens/spending/bloc/spending_bloc.dart'
+    as _i41;
 import 'package:spending/presentation/screens/splash/bloc/splash_bloc.dart'
     as _i38;
 import 'package:spending/presentation/screens/sync/bloc/sync_bloc.dart' as _i39;
@@ -95,22 +97,16 @@ extension GetItInjectableX on _i1.GetIt {
             ));
     gh.lazySingleton<_i13.SpendingMapper>(() => _i13.SpendingMapper());
     gh.lazySingleton<_i14.SpendingRemoteDataSource>(
-        () => _i15.SpendingRemoteDataSourceImpl(
-              gh<_i7.FirebaseFirestore>(),
-              gh<_i10.Logger>(),
-            ));
+        () => _i15.SpendingRemoteDataSourceImpl(gh<_i7.FirebaseFirestore>()));
     gh.factory<_i16.TextEditingController>(
         () => registerModule.textEditingController);
     gh.lazySingleton<_i17.UserMapper>(() => _i17.UserMapper());
     gh.lazySingleton<_i18.AuthService>(() => _i19.AuthServiceImpl(
-          gh<_i10.Logger>(),
           gh<_i9.GoogleSignIn>(),
           gh<_i6.FirebaseAuth>(),
         ));
-    gh.lazySingleton<_i20.ConnectionService>(() => _i21.ConnectionServiceImpl(
-          gh<_i3.Connectivity>(),
-          gh<_i10.Logger>(),
-        ));
+    gh.lazySingleton<_i20.ConnectionService>(
+        () => _i21.ConnectionServiceImpl(gh<_i3.Connectivity>()));
     gh.lazySingleton<_i22.SpendingLocalDataSource>(
         () => _i23.SpendingLocalDataSourceImpl(
               gh<_i5.DatabaseFloor>(),
@@ -132,14 +128,13 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i31.UserInteractor(gh<_i28.UserRepository>()));
     gh.lazySingleton<_i32.ConnectionBloc>(
         () => _i32.ConnectionBloc(gh<_i20.ConnectionService>()));
-    gh.lazySingleton<_i33.LoginBloc>(() => _i33.LoginBloc(
-          gh<_i30.UserUseCase>(),
-          gh<_i10.Logger>(),
-        ));
+    gh.lazySingleton<_i33.LoginBloc>(
+        () => _i33.LoginBloc(gh<_i30.UserUseCase>()));
     gh.lazySingleton<_i34.SpendingRepository>(() => _i35.SpendingRepositoryImpl(
           gh<_i14.SpendingRemoteDataSource>(),
           gh<_i22.SpendingLocalDataSource>(),
           gh<_i24.UserLocalDataSource>(),
+          gh<_i11.NotificationService>(),
         ));
     gh.lazySingleton<_i36.SpendingUseCase>(
         () => _i37.SpendingInteractor(gh<_i34.SpendingRepository>()));
@@ -151,10 +146,11 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i30.UserUseCase>(),
           gh<_i36.SpendingUseCase>(),
           gh<_i10.Logger>(),
-          gh<_i16.TextEditingController>(),
         ));
+    gh.lazySingleton<_i41.SpendingBloc>(
+        () => _i41.SpendingBloc(gh<_i36.SpendingUseCase>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i41.RegisterModule {}
+class _$RegisterModule extends _i42.RegisterModule {}

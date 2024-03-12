@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
+import 'package:spending/core/constants/image_asset_path.dart';
 import 'package:spending/core/constants/status.dart';
-import 'package:spending/core/services/auth_service.dart';
 import 'package:spending/core/utils/toast.dart';
 import 'package:spending/core/utils/utils.dart';
 import 'package:spending/domain/models/spending/spending_model.dart';
@@ -23,13 +22,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final UserUseCase _userUseCase;
   final SpendingUseCase _spendingUseCase;
   final Logger _logger;
-  final TextEditingController titleController;
 
   HomeBloc(
     this._userUseCase,
     this._spendingUseCase,
     this._logger,
-    this.titleController,
   ) : super(const HomeState()) {
     on<HomeInitial>(_initial);
     on<HomeStarted>(_started);
@@ -38,8 +35,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeSetDateIso>(_setDateIso);
     on<HomeSetSpendingTitle>(_setSpendingTitle);
     on<HomeCreateReport>(_createReport);
+    on<HomeUpdateReport>(_updateReport);
+    on<HomeRemoveShowAlertDialog>(_showRemoveAlertDialog);
+    on<HomeRemoveSpending>(_doRemoveSpending);
     on<HomeLogout>(_logout);
   }
+
+  final shape = const RoundedRectangleBorder(
+    borderRadius: BorderRadius.vertical(
+      top: Radius.circular(24),
+    ),
+  );
 
   void _setDateIso(HomeSetDateIso event, Emitter<HomeState> emit) =>
       emit(state.copyWith(dateIso: event.value));
@@ -61,9 +67,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         status: Status.success,
       ));
     } catch (e) {
+      emit(state.copyWith(status: Status.failure));
       Toast.show('$e', isError: true);
       _logger.d(e);
-
     }
   }
 
@@ -72,7 +78,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     final user = state.user;
-
     showModalBottomSheet(
       context: event.context,
       builder: (context) {
@@ -110,11 +115,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ],
         );
       },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
-      ),
+      shape: shape,
     );
   }
 
@@ -133,41 +134,96 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  void _updateReport(HomeUpdateReport event, Emitter<HomeState> emit) async {
+    try {
+      await _spendingUseCase.updateOne(event.spending);
+      final spendings = await _spendingUseCase.findAll();
+      emit(state.copyWith(spendings: spendings));
+      Toast.show('The report has been updated successfully');
+    } catch (e) {
+      Toast.show('$e', isError: true);
+    }
+  }
+
   void _showDatePickerBottomSheet(
     BuildContext context,
     TextEditingController dateController,
+    TextEditingController datePreviewController,
+    bool isUpdate,
   ) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
+        DateTime date;
+
+        if (isUpdate) {
+          date = DateTime.parse(dateController.text);
+        } else {
+          date = DateTime.now();
+        }
+
         return Padding(
           padding: const EdgeInsets.all(24),
           child: SfDateRangePicker(
-            initialDisplayDate: DateTime.now(),
+            initialDisplayDate: date,
+            initialSelectedDate: isUpdate ? date : null,
             selectionMode: DateRangePickerSelectionMode.single,
             onSelectionChanged: (args) {
               final value = args.value;
-
               if (value is DateTime) {
                 dateController.text = value.toIso8601String();
+                datePreviewController.text =
+                    Utils.dateFormat(value.toIso8601String());
                 Navigator.pop(context);
               }
             },
           ),
         );
       },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
-      ),
+      shape: shape,
     );
+  }
+
+  void _doRemoveSpending(
+    HomeRemoveSpending event,
+    Emitter<HomeState> emit,
+  ) async {
+    try {
+      await _spendingUseCase.removeOne(event.spending);
+      final spendings = await _spendingUseCase.findAll();
+      emit(state.copyWith(spendings: spendings));
+      Toast.show(
+        'Report successfully deleted.',
+      );
+    } catch (e) {
+      Toast.show('$e', isError: true);
+    }
   }
 
   void _showCreateReportBottomSheet(
     HomeShowCreateReportBottomSheet event,
     Emitter<HomeState> emit,
   ) async {
+    final titleController = event.titleController;
+    final datePreviewController = event.datePreviewController;
+    final dateController = event.dateController;
+    final isUpdate = event.isUpdate;
+    final spending = event.spending;
+
+    void clearTextField() {
+      titleController.clear();
+      dateController.clear();
+      datePreviewController.clear();
+    }
+
+    if (isUpdate && spending != null) {
+      titleController.text = spending.title;
+      dateController.text = spending.createdAt;
+      datePreviewController.text = Utils.dateFormat(spending.createdAt);
+    } else {
+      clearTextField();
+    }
+
     showModalBottomSheet(
       context: event.context,
       builder: (context) {
@@ -194,11 +250,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ),
               const SizedBox(height: 4),
               TextField(
-                controller: event.titleController,
+                controller: titleController,
                 style: const TextStyle(fontSize: 14),
                 decoration: const InputDecoration(
                   hintText: 'Write...',
-                  helperText: 'If not filled it will be "My Spending"',
+
+                  /// helperText: 'If not filled it will be "My Spending"',
                 ),
               ),
               const SizedBox(height: 16),
@@ -211,43 +268,69 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 ),
               ),
               const SizedBox(height: 4),
-              TextField(
-                onTap: () {
-                  _showDatePickerBottomSheet(context, event.dateController);
+              Builder(
+                builder: (context) {
+                  void onPressed() {
+                    _showDatePickerBottomSheet(
+                      context,
+                      dateController,
+                      datePreviewController,
+                      isUpdate,
+                    );
+                  }
+
+                  return TextField(
+                    onTap: onPressed,
+                    controller: datePreviewController,
+                    readOnly: true,
+                    style: const TextStyle(fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: 'Enter date',
+
+                      /// helperText: 'If not selected then the date is this month',
+                      suffixIcon: IconButton(
+                        onPressed: onPressed,
+                        icon: const FaIcon(FontAwesomeIcons.calendarDay),
+                      ),
+                    ),
+                  );
                 },
-                controller: event.dateController,
-                readOnly: true,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  hintText: 'Please enter date',
-                  helperText: 'If not selected then the date is this month',
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      _showDatePickerBottomSheet(context, event.dateController);
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.calendarDay),
-                  ),
-                ),
               ),
               const SizedBox(height: 24),
               BlocBuilder<HomeBloc, HomeState>(
                 builder: (context, state) {
                   VoidCallback? onPressed;
 
-                  if (state.spendingTitle.isNotEmpty &&
-                      state.dateIso.isNotEmpty) {
+                  final isValid = state.spendingTitle.isNotEmpty &&
+                      state.dateIso.isNotEmpty;
+
+                  var title = 'Create Report';
+
+                  if (isValid && isUpdate) {
+                    title = 'Update Report';
+                    onPressed = () {
+                      var mSpending = spending!.copyWith(
+                        title: state.spendingTitle,
+                        createdAt: state.dateIso,
+                      );
+
+                      context
+                          .read<HomeBloc>()
+                          .add(HomeUpdateReport(spending: mSpending));
+                      clearTextField();
+                      Navigator.pop(context);
+                    };
+                  } else if (isValid) {
                     onPressed = () {
                       context.read<HomeBloc>().add(const HomeCreateReport());
-                      event.titleController.clear();
-                      event.dateController.clear();
+                      clearTextField();
                       Navigator.pop(context);
                     };
                   }
 
-                  return ElevatedButton.icon(
+                  return ElevatedButton(
                     onPressed: onPressed,
-                    icon: const FaIcon(FontAwesomeIcons.circlePlus),
-                    label: const Text("Create Report"),
+                    child: Text(title),
                   );
                 },
               ),
@@ -255,11 +338,83 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           ),
         );
       },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
-      ),
+      shape: shape,
+    );
+  }
+
+  void _showRemoveAlertDialog(
+    HomeRemoveShowAlertDialog event,
+    Emitter<HomeState> emit,
+  ) async {
+    showDialog(
+      context: event.context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          contentPadding: const EdgeInsets.all(24),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 130,
+                height: 130,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey.shade200,
+                ),
+                child: Image.asset(
+                  ImageAssetPath.deleteFile,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Delete Report?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              const Text(
+                'If you delete this report, it cannot be returned.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black38,
+                ),
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context
+                            .read<HomeBloc>()
+                            .add(HomeRemoveSpending(spending: event.spending));
+
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Yes'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('No'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -287,9 +442,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       Toast.show('$e', isError: true);
     }
-  }
-
-  void dispose() {
-    titleController.dispose();
   }
 }

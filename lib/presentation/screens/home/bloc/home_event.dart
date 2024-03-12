@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:spending/domain/models/spending/spending_model.dart';
 
 part 'home_event.freezed.dart';
 
@@ -26,6 +27,10 @@ abstract class HomeEvent with _$HomeEvent {
 
   const factory HomeEvent.createReport() = HomeCreateReport;
 
+  const factory HomeEvent.updateReport({
+    required final SpendingModel spending,
+  }) = HomeUpdateReport;
+
   const factory HomeEvent.setSpendingTitle({
     required String value,
   }) = HomeSetSpendingTitle;
@@ -38,5 +43,17 @@ abstract class HomeEvent with _$HomeEvent {
     required final BuildContext context,
     required final TextEditingController titleController,
     required final TextEditingController dateController,
+    required final TextEditingController datePreviewController,
+    @Default(false) bool isUpdate,
+    SpendingModel? spending,
   }) = HomeShowCreateReportBottomSheet;
+
+  const factory HomeEvent.showRemoveAlertDialog({
+    required final BuildContext context,
+    required final SpendingModel spending,
+  }) = HomeRemoveShowAlertDialog;
+
+  const factory HomeEvent.removeSpending({
+    required final SpendingModel spending,
+  }) = HomeRemoveSpending;
 }

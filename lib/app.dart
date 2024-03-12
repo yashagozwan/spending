@@ -5,6 +5,7 @@ import 'package:spending/core/di/di.dart';
 import 'package:spending/presentation/screens/connection/bloc/connection_bloc.dart';
 import 'package:spending/presentation/screens/home/bloc/home_bloc.dart';
 import 'package:spending/presentation/screens/login/bloc/login_bloc.dart';
+import 'package:spending/presentation/screens/spending/bloc/spending_bloc.dart';
 import 'package:spending/presentation/screens/splash/bloc/splash_bloc.dart';
 import 'package:spending/presentation/screens/splash/splash_screen.dart';
 import 'package:spending/presentation/screens/sync/bloc/sync_bloc.dart';
@@ -37,6 +38,7 @@ class App extends StatelessWidget {
         _provider(getIt<HomeBloc>()),
         _provider(getIt<ConnectionBloc>()),
         _provider(getIt<SyncBloc>()),
+        _provider(getIt<SpendingBloc>()),
       ],
       child: MaterialApp(
         theme: theme,

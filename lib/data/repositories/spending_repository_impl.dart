@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:injectable/injectable.dart';
+import 'package:spending/core/services/notification_service.dart';
 import 'package:spending/data/sources/local/spending_local_data_source.dart';
 import 'package:spending/data/sources/remote/spending_remote_data_source.dart';
 import 'package:spending/domain/models/spending/spending_model.dart';
@@ -10,11 +13,13 @@ class SpendingRepositoryImpl implements SpendingRepository {
   final SpendingRemoteDataSource _remote;
   final SpendingLocalDataSource _local;
   final UserLocalDataSource _userLocalDataSource;
+  final NotificationService _notificationService;
 
   SpendingRepositoryImpl(
     this._remote,
     this._local,
     this._userLocalDataSource,
+    this._notificationService,
   );
 
   @override
@@ -52,6 +57,10 @@ class SpendingRepositoryImpl implements SpendingRepository {
     try {
       await _local.removeOne(spending);
       await _remote.removeOne(spending);
+      _showNotify(
+        title: spending.title,
+        body: 'Report successfully deleted',
+      );
       return true;
     } catch (_) {
       return false;
@@ -63,10 +72,25 @@ class SpendingRepositoryImpl implements SpendingRepository {
     try {
       await _local.updateOne(spending);
       await _remote.updateOne(spending);
+      _showNotify(
+        title: spending.title,
+        body: 'Report successfully updated',
+      );
       return true;
     } catch (_) {
       return false;
     }
+  }
+
+  void _showNotify({
+    required String title,
+    required String body,
+  }) {
+    _notificationService.showNotification(
+      id: Random().nextInt(5000),
+      title: title,
+      body: body,
+    );
   }
 
   @override
@@ -74,6 +98,10 @@ class SpendingRepositoryImpl implements SpendingRepository {
     try {
       final mSpending = await _remote.insertOne(spending);
       await _local.insertOne(mSpending);
+      _showNotify(
+        title: spending.title,
+        body: 'Report successfully created',
+      );
       return true;
     } catch (_) {
       return false;
