@@ -17,7 +17,7 @@ class SpendingLocalDataSourceImpl implements SpendingLocalDataSource {
   @override
   Future<List<SpendingModel>> findAll() async {
     final spendings = await _dao.findAll();
-    return spendings.map((e) => _mapper.toModel(e)).toList();
+    return spendings.map(_mapper.toModel).toList();
   }
 
   @override
