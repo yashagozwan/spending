@@ -24,7 +24,7 @@ class ExpenseRemoteDataSourceImpl implements ExpenseRemoteDataSource {
 
     final mExpanse = ExpenseModel.fromJson(
       snapshot.data() as Map<String, dynamic>,
-    );
+    ).copyWith(id: doc.id);
 
     await doc.update(mExpanse.toJson());
     return mExpanse;

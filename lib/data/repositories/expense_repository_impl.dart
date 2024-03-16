@@ -51,6 +51,7 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
 
   @override
   Future<List<ExpenseModel>> findAllByUserIdRemote() async {
+    await _local.removeAll();
     final user = (await _userUseCase.getUser())!;
     return _remote.findAll(user.id);
   }
