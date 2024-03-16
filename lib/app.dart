@@ -24,7 +24,7 @@ class App extends StatelessWidget {
     final theme = getIt<CustomTheme>().light;
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: theme.scaffoldBackgroundColor,
+      statusBarColor: Colors.transparent,
       statusBarBrightness: Brightness.dark,
       statusBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: theme.scaffoldBackgroundColor,

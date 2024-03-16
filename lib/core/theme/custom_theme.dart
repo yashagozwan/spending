@@ -87,9 +87,16 @@ class CustomTheme {
     );
 
     final dialogTheme = DialogTheme(
-        shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(rounded + 10),
-    ));
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(rounded + 10),
+      ),
+    );
+
+    final cardTheme = CardTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: borderRadius,
+      ),
+    );
 
     return theme.copyWith(
       elevatedButtonTheme: elevatedButtonThemeData,
@@ -97,6 +104,7 @@ class CustomTheme {
       outlinedButtonTheme: outlinedButtonThemeData,
       inputDecorationTheme: inputDecorationTheme,
       dialogTheme: dialogTheme,
+      cardTheme: cardTheme,
     );
   }
 }

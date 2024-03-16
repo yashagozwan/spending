@@ -170,15 +170,20 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i46.SpendingInteractor(gh<_i43.SpendingRepository>()));
     gh.lazySingleton<_i47.SplashBloc>(
         () => _i47.SplashBloc(gh<_i35.UserUseCase>()));
-    gh.lazySingleton<_i48.SyncBloc>(
-        () => _i48.SyncBloc(gh<_i45.SpendingUseCase>()));
+    gh.lazySingleton<_i48.SyncBloc>(() => _i48.SyncBloc(
+          gh<_i45.SpendingUseCase>(),
+          gh<_i40.ExpenseUseCase>(),
+        ));
     gh.lazySingleton<_i49.HomeBloc>(() => _i49.HomeBloc(
           gh<_i35.UserUseCase>(),
           gh<_i45.SpendingUseCase>(),
           gh<_i11.Logger>(),
         ));
-    gh.lazySingleton<_i50.SpendingBloc>(
-        () => _i50.SpendingBloc(gh<_i45.SpendingUseCase>()));
+    gh.lazySingleton<_i50.SpendingBloc>(() => _i50.SpendingBloc(
+          gh<_i45.SpendingUseCase>(),
+          gh<_i40.ExpenseUseCase>(),
+          gh<_i11.Logger>(),
+        ));
     return this;
   }
 }

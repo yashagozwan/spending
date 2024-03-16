@@ -25,7 +25,8 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
 
   @override
   Future<bool> insertOneNetwork(ExpenseModel expense) async {
-    final mExpense = await _remote.insertOne(expense);
+    final user = (await _userUseCase.getUser())!;
+    final mExpense = await _remote.insertOne(expense.copyWith(userId: user.id));
     return insertOne(mExpense);
   }
 

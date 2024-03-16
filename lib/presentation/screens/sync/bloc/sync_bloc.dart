@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:spending/core/utils/toast.dart';
+import 'package:spending/domain/usecases/expense_usecase.dart';
 import 'package:spending/domain/usecases/spending_usecase.dart';
 import 'package:spending/presentation/screens/home/home_screen.dart';
 import 'package:spending/presentation/screens/sync/bloc/sync_event.dart';
@@ -10,9 +11,11 @@ import 'package:spending/presentation/screens/sync/bloc/sync_state.dart';
 @lazySingleton
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   final SpendingUseCase _spendingUseCase;
+  final ExpenseUseCase _expenseUseCase;
 
   SyncBloc(
     this._spendingUseCase,
+    this._expenseUseCase,
   ) : super(const SyncState()) {
     on<SyncInitial>(_initial);
     on<SyncStarted>(_started);
@@ -26,9 +29,14 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
     try {
       final spendings = await _spendingUseCase.findAllRemote();
+      final expenses = await _expenseUseCase.findAllByUserIdRemote();
 
       for (var spending in spendings) {
         await _spendingUseCase.insertOne(spending);
+      }
+
+      for (var expense in expenses) {
+        await _expenseUseCase.insertOne(expense);
       }
 
       if (!context.mounted) {

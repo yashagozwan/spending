@@ -12,32 +12,43 @@ class ExpenseRemoteDataSourceImpl implements ExpenseRemoteDataSource {
   CollectionReference get _collection => _firestore.collection('expenses');
 
   @override
-  Future<ExpenseModel> findOne(String id) {
-    // TODO: implement findOne
-    throw UnimplementedError();
+  Future<ExpenseModel> findOne(String id) async {
+    final data = await _collection.doc(id).get();
+    return ExpenseModel.fromJson(data.data() as Map<String, dynamic>);
   }
 
   @override
-  Future<ExpenseModel> insertOne(ExpenseModel expense) {
-    // TODO: implement insertOne
-    throw UnimplementedError();
+  Future<ExpenseModel> insertOne(ExpenseModel expense) async {
+    final doc = await _collection.add(expense.toJson());
+    final snapshot = await doc.get();
+
+    final mExpanse = ExpenseModel.fromJson(
+      snapshot.data() as Map<String, dynamic>,
+    );
+
+    await doc.update(mExpanse.toJson());
+    return mExpanse;
   }
 
   @override
-  Future<bool> updateOne(ExpenseModel expense) {
-    // TODO: implement updateOne
-    throw UnimplementedError();
+  Future<bool> updateOne(ExpenseModel expense) async {
+    await _collection.doc(expense.id).update(expense.toJson());
+    return true;
   }
 
   @override
-  Future<bool> removeOne(ExpenseModel expense) {
-    // TODO: implement removeOne
-    throw UnimplementedError();
+  Future<bool> removeOne(ExpenseModel expense) async {
+    await _collection.doc(expense.id).delete();
+    return true;
   }
 
   @override
-  Future<List<ExpenseModel>> findAll(String userId) {
-    // TODO: implement findAll
-    throw UnimplementedError();
+  Future<List<ExpenseModel>> findAll(String userId) async {
+    final expenses =
+        await _collection.where('user_id', isEqualTo: userId).get();
+
+    return expenses.docs
+        .map((e) => ExpenseModel.fromJson(e.data() as Map<String, dynamic>))
+        .toList();
   }
 }

@@ -29,7 +29,7 @@ abstract class RegisterModule {
 
   @preResolve
   Future<DatabaseFloor> get databaseFloor {
-    return $FloorDatabaseFloor.databaseBuilder('database_v2.db').build();
+    return $FloorDatabaseFloor.databaseBuilder('database_v3.db').build();
   }
 
   @lazySingleton

@@ -18,4 +18,12 @@ class Utils {
   static String dateFormat(String createdAt) {
     return DateFormat("dd MMMM yyyy").format(DateTime.parse(createdAt));
   }
+
+  static String idr(int value) {
+    return NumberFormat.currency(
+      locale: 'id',
+      decimalDigits: 0,
+      symbol: 'Rp'
+    ).format(value);
+  }
 }
