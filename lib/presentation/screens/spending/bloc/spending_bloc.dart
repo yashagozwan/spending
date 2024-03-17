@@ -6,6 +6,7 @@ import 'package:spending/core/constants/status.dart';
 import 'package:spending/core/utils/toast.dart';
 import 'package:spending/domain/models/expense/expense_model.dart';
 import 'package:spending/domain/usecases/expense_usecase.dart';
+import 'package:spending/domain/usecases/income_usecase.dart';
 import 'package:spending/domain/usecases/spending_usecase.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_event.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_state.dart';
@@ -16,11 +17,13 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 class SpendingBloc extends Bloc<SpendingEvent, SpendingState> {
   final SpendingUseCase _spendingUseCase;
   final ExpenseUseCase _expenseUseCase;
+  final IncomeUseCase _incomeUseCase;
   final Logger _logger;
 
   SpendingBloc(
     this._spendingUseCase,
     this._expenseUseCase,
+    this._incomeUseCase,
     this._logger,
   ) : super(const SpendingState()) {
     on<SpendingInitial>(_initial);
@@ -81,12 +84,15 @@ class SpendingBloc extends Bloc<SpendingEvent, SpendingState> {
     try {
       final spending = await _spendingUseCase.findOne(state.id);
       final expenses = await _expenseUseCase.findAll(spending.id);
+      final incomes = await _incomeUseCase.findAll(spending.id);
 
       emit(state.copyWith(
-        spending: spending,
         status: Status.success,
+        spending: spending,
         expenses: expenses,
+        incomes: incomes,
       ));
+
     } catch (e) {
       emit(state.copyWith(status: Status.failure));
       Toast.show('$e', isError: true);

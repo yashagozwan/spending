@@ -202,6 +202,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i57.SyncBloc>(() => _i57.SyncBloc(
           gh<_i54.SpendingUseCase>(),
           gh<_i45.ExpenseUseCase>(),
+          gh<_i49.IncomeUseCase>(),
         ));
     gh.lazySingleton<_i58.HomeBloc>(() => _i58.HomeBloc(
           gh<_i40.UserUseCase>(),
@@ -211,6 +212,7 @@ extension GetItInjectableX on _i1.GetIt {
     gh.lazySingleton<_i59.SpendingBloc>(() => _i59.SpendingBloc(
           gh<_i54.SpendingUseCase>(),
           gh<_i45.ExpenseUseCase>(),
+          gh<_i49.IncomeUseCase>(),
           gh<_i14.Logger>(),
         ));
     return this;

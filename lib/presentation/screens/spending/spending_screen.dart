@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spending/core/adapter/expense_adapater.dart';
+import 'package:spending/core/adapter/income_adapter.dart';
 import 'package:spending/core/utils/utils.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_bloc.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_event.dart';
@@ -89,7 +90,21 @@ class _SpendingScreenState extends State<SpendingScreen> {
                   const Text('Total Expense'),
                   BlocBuilder<SpendingBloc, SpendingState>(
                     builder: (context, state) {
-                      final amount = ExpenseAdapter.calculateAmount(state.expenses);
+                      final amount =
+                          ExpenseAdapter.calculateAmount(state.expenses);
+                      return Text(
+                        Utils.idr(amount),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
+                  const Text('Total Income'),
+                  BlocBuilder<SpendingBloc, SpendingState>(
+                    builder: (context, state) {
+                      final amount =
+                          IncomeAdapter.calculateAmount(state.incomes);
                       return Text(
                         Utils.idr(amount),
                         style: const TextStyle(

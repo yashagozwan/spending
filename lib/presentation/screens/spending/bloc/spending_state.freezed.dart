@@ -22,6 +22,7 @@ mixin _$SpendingState {
   String get expanseTitle => throw _privateConstructorUsedError;
   int get expanseAmount => throw _privateConstructorUsedError;
   List<ExpenseModel> get expenses => throw _privateConstructorUsedError;
+  List<IncomeModel> get incomes => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SpendingStateCopyWith<SpendingState> get copyWith =>
@@ -40,7 +41,8 @@ abstract class $SpendingStateCopyWith<$Res> {
       SpendingModel spending,
       String expanseTitle,
       int expanseAmount,
-      List<ExpenseModel> expenses});
+      List<ExpenseModel> expenses,
+      List<IncomeModel> incomes});
 
   $SpendingModelCopyWith<$Res> get spending;
 }
@@ -64,6 +66,7 @@ class _$SpendingStateCopyWithImpl<$Res, $Val extends SpendingState>
     Object? expanseTitle = null,
     Object? expanseAmount = null,
     Object? expenses = null,
+    Object? incomes = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -90,6 +93,10 @@ class _$SpendingStateCopyWithImpl<$Res, $Val extends SpendingState>
           ? _value.expenses
           : expenses // ignore: cast_nullable_to_non_nullable
               as List<ExpenseModel>,
+      incomes: null == incomes
+          ? _value.incomes
+          : incomes // ignore: cast_nullable_to_non_nullable
+              as List<IncomeModel>,
     ) as $Val);
   }
 
@@ -116,7 +123,8 @@ abstract class _$$SpendingStateImplCopyWith<$Res>
       SpendingModel spending,
       String expanseTitle,
       int expanseAmount,
-      List<ExpenseModel> expenses});
+      List<ExpenseModel> expenses,
+      List<IncomeModel> incomes});
 
   @override
   $SpendingModelCopyWith<$Res> get spending;
@@ -139,6 +147,7 @@ class __$$SpendingStateImplCopyWithImpl<$Res>
     Object? expanseTitle = null,
     Object? expanseAmount = null,
     Object? expenses = null,
+    Object? incomes = null,
   }) {
     return _then(_$SpendingStateImpl(
       status: null == status
@@ -165,6 +174,10 @@ class __$$SpendingStateImplCopyWithImpl<$Res>
           ? _value._expenses
           : expenses // ignore: cast_nullable_to_non_nullable
               as List<ExpenseModel>,
+      incomes: null == incomes
+          ? _value._incomes
+          : incomes // ignore: cast_nullable_to_non_nullable
+              as List<IncomeModel>,
     ));
   }
 }
@@ -178,8 +191,10 @@ class _$SpendingStateImpl implements _SpendingState {
       this.spending = const SpendingModel(),
       this.expanseTitle = '',
       this.expanseAmount = 0,
-      final List<ExpenseModel> expenses = const []})
-      : _expenses = expenses;
+      final List<ExpenseModel> expenses = const [],
+      final List<IncomeModel> incomes = const []})
+      : _expenses = expenses,
+        _incomes = incomes;
 
   @override
   @JsonKey()
@@ -205,9 +220,18 @@ class _$SpendingStateImpl implements _SpendingState {
     return EqualUnmodifiableListView(_expenses);
   }
 
+  final List<IncomeModel> _incomes;
+  @override
+  @JsonKey()
+  List<IncomeModel> get incomes {
+    if (_incomes is EqualUnmodifiableListView) return _incomes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_incomes);
+  }
+
   @override
   String toString() {
-    return 'SpendingState(status: $status, id: $id, spending: $spending, expanseTitle: $expanseTitle, expanseAmount: $expanseAmount, expenses: $expenses)';
+    return 'SpendingState(status: $status, id: $id, spending: $spending, expanseTitle: $expanseTitle, expanseAmount: $expanseAmount, expenses: $expenses, incomes: $incomes)';
   }
 
   @override
@@ -223,7 +247,8 @@ class _$SpendingStateImpl implements _SpendingState {
                 other.expanseTitle == expanseTitle) &&
             (identical(other.expanseAmount, expanseAmount) ||
                 other.expanseAmount == expanseAmount) &&
-            const DeepCollectionEquality().equals(other._expenses, _expenses));
+            const DeepCollectionEquality().equals(other._expenses, _expenses) &&
+            const DeepCollectionEquality().equals(other._incomes, _incomes));
   }
 
   @override
@@ -234,7 +259,8 @@ class _$SpendingStateImpl implements _SpendingState {
       spending,
       expanseTitle,
       expanseAmount,
-      const DeepCollectionEquality().hash(_expenses));
+      const DeepCollectionEquality().hash(_expenses),
+      const DeepCollectionEquality().hash(_incomes));
 
   @JsonKey(ignore: true)
   @override
@@ -250,7 +276,8 @@ abstract class _SpendingState implements SpendingState {
       final SpendingModel spending,
       final String expanseTitle,
       final int expanseAmount,
-      final List<ExpenseModel> expenses}) = _$SpendingStateImpl;
+      final List<ExpenseModel> expenses,
+      final List<IncomeModel> incomes}) = _$SpendingStateImpl;
 
   @override
   Status get status;
@@ -264,6 +291,8 @@ abstract class _SpendingState implements SpendingState {
   int get expanseAmount;
   @override
   List<ExpenseModel> get expenses;
+  @override
+  List<IncomeModel> get incomes;
   @override
   @JsonKey(ignore: true)
   _$$SpendingStateImplCopyWith<_$SpendingStateImpl> get copyWith =>
