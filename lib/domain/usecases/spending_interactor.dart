@@ -7,7 +7,7 @@ import 'package:spending/domain/usecases/spending_usecase.dart';
 class SpendingInteractor implements SpendingUseCase {
   final SpendingRepository _repository;
 
-  SpendingInteractor(this._repository);
+  const SpendingInteractor(this._repository);
 
   @override
   Future<List<SpendingModel>> findAll() {

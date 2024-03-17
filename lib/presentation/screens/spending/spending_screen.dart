@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:spending/core/adapter/expense_adapater.dart';
 import 'package:spending/core/utils/utils.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_bloc.dart';
 import 'package:spending/presentation/screens/spending/bloc/spending_event.dart';
@@ -70,26 +71,32 @@ class _SpendingScreenState extends State<SpendingScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Card(
-            margin: EdgeInsets.all(16),
+          Card(
+            margin: const EdgeInsets.all(16),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
+                  const Text(
                     'Calculation',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Total ${1000}',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const SizedBox(height: 8),
+                  const Text('Total Expense'),
+                  BlocBuilder<SpendingBloc, SpendingState>(
+                    builder: (context, state) {
+                      final amount = ExpenseAdapter.calculateAmount(state.expenses);
+                      return Text(
+                        Utils.idr(amount),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -196,6 +203,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
   }) {
     return Expanded(
       child: Card(
+        clipBehavior: Clip.hardEdge,
         margin: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

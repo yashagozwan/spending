@@ -7,7 +7,7 @@ import 'package:spending/domain/usecases/expense_usecase.dart';
 class ExpenseInteractor implements ExpenseUseCase {
   final ExpenseRepository _repository;
 
-  ExpenseInteractor(this._repository);
+  const ExpenseInteractor(this._repository);
 
   @override
   Future<ExpenseModel> findOne(String id) {

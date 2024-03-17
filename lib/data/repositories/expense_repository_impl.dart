@@ -45,8 +45,13 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @override
-  Future<List<ExpenseModel>> findAll(String spendingId) {
-    return _local.findAll(spendingId);
+  Future<List<ExpenseModel>> findAll(String spendingId) async {
+    final expenses = await _local.findAll(spendingId);
+
+    expenses.sort((b, a) =>
+        DateTime.parse(a.createdAt).compareTo(DateTime.parse(b.createdAt)));
+
+    return expenses;
   }
 
   @override

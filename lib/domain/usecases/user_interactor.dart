@@ -7,7 +7,7 @@ import 'package:spending/domain/usecases/user_usecase.dart';
 class UserInteractor implements UserUseCase {
   final UserRepository _repository;
 
-  UserInteractor(this._repository);
+  const UserInteractor(this._repository);
 
   @override
   Future<UserModel?> getUser() {

@@ -67,6 +67,8 @@ class _$DatabaseFloor extends DatabaseFloor {
 
   ExpenseDAO? _expenseDAOInstance;
 
+  IncomeDAO? _incomeDAOInstance;
+
   Future<sqflite.Database> open(
     String path,
     List<Migration> migrations, [
@@ -94,6 +96,8 @@ class _$DatabaseFloor extends DatabaseFloor {
             'CREATE TABLE IF NOT EXISTS `spending` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `user_id` TEXT NOT NULL, `created_at` TEXT NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `expenses` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `amount` INTEGER NOT NULL, `spending_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `created_at` TEXT NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY (`spending_id`) REFERENCES `spending` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `incomes` (`id` TEXT NOT NULL, `title` TEXT NOT NULL, `amount` INTEGER NOT NULL, `spending_id` TEXT NOT NULL, `user_id` TEXT NOT NULL, `created_at` TEXT NOT NULL, FOREIGN KEY (`spending_id`) REFERENCES `spending` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -114,6 +118,11 @@ class _$DatabaseFloor extends DatabaseFloor {
   @override
   ExpenseDAO get expenseDAO {
     return _expenseDAOInstance ??= _$ExpenseDAO(database, changeListener);
+  }
+
+  @override
+  IncomeDAO get incomeDAO {
+    return _incomeDAOInstance ??= _$IncomeDAO(database, changeListener);
   }
 }
 
@@ -351,5 +360,118 @@ class _$ExpenseDAO extends ExpenseDAO {
   @override
   Future<void> removeOne(ExpenseFloor expense) async {
     await _expenseFloorDeletionAdapter.delete(expense);
+  }
+}
+
+class _$IncomeDAO extends IncomeDAO {
+  _$IncomeDAO(
+    this.database,
+    this.changeListener,
+  )   : _queryAdapter = QueryAdapter(database),
+        _incomeFloorInsertionAdapter = InsertionAdapter(
+            database,
+            'incomes',
+            (IncomeFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'amount': item.amount,
+                  'spending_id': item.spendingId,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                }),
+        _incomeFloorUpdateAdapter = UpdateAdapter(
+            database,
+            'incomes',
+            ['id'],
+            (IncomeFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'amount': item.amount,
+                  'spending_id': item.spendingId,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                }),
+        _incomeFloorDeletionAdapter = DeletionAdapter(
+            database,
+            'incomes',
+            ['id'],
+            (IncomeFloor item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'amount': item.amount,
+                  'spending_id': item.spendingId,
+                  'user_id': item.userId,
+                  'created_at': item.createdAt
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<IncomeFloor> _incomeFloorInsertionAdapter;
+
+  final UpdateAdapter<IncomeFloor> _incomeFloorUpdateAdapter;
+
+  final DeletionAdapter<IncomeFloor> _incomeFloorDeletionAdapter;
+
+  @override
+  Future<List<IncomeFloor>> findAllBySpendingId(String spendingId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM incomes WHERE spending_id = ?1',
+        mapper: (Map<String, Object?> row) => IncomeFloor(
+            id: row['id'] as String,
+            title: row['title'] as String,
+            amount: row['amount'] as int,
+            spendingId: row['spending_id'] as String,
+            userId: row['user_id'] as String,
+            createdAt: row['created_at'] as String),
+        arguments: [spendingId]);
+  }
+
+  @override
+  Future<List<IncomeFloor>> findAll() async {
+    return _queryAdapter.queryList('SELECT * FROM incomes',
+        mapper: (Map<String, Object?> row) => IncomeFloor(
+            id: row['id'] as String,
+            title: row['title'] as String,
+            amount: row['amount'] as int,
+            spendingId: row['spending_id'] as String,
+            userId: row['user_id'] as String,
+            createdAt: row['created_at'] as String));
+  }
+
+  @override
+  Future<IncomeFloor?> findOne(String id) async {
+    return _queryAdapter.query('SELECT * FROM incomes WHERE id = ?1',
+        mapper: (Map<String, Object?> row) => IncomeFloor(
+            id: row['id'] as String,
+            title: row['title'] as String,
+            amount: row['amount'] as int,
+            spendingId: row['spending_id'] as String,
+            userId: row['user_id'] as String,
+            createdAt: row['created_at'] as String),
+        arguments: [id]);
+  }
+
+  @override
+  Future<void> removeAll() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM incomes');
+  }
+
+  @override
+  Future<void> insertOne(IncomeFloor income) async {
+    await _incomeFloorInsertionAdapter.insert(income, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateOne(IncomeFloor income) async {
+    await _incomeFloorUpdateAdapter.update(income, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> removeOne(IncomeFloor income) async {
+    await _incomeFloorDeletionAdapter.delete(income);
   }
 }
