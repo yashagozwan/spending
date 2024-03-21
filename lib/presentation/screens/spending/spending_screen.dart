@@ -310,6 +310,7 @@ class _SpendingScreenState extends State<SpendingScreen> {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: Colors.grey.shade400,
         ),
