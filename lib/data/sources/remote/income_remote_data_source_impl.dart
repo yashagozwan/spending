@@ -32,7 +32,7 @@ class IncomeRemoteDataSourceImpl implements IncomeRemoteDataSource {
     final snapshot = await doc.get();
 
     final mIncome = IncomeModel.fromJson(
-      snapshot.data() as Map<String, double>,
+      snapshot.data() as Map<String, dynamic>,
     ).copyWith(id: doc.id);
 
     await doc.update(mIncome.toJson());

@@ -92,6 +92,63 @@ abstract class SpendingCreateExpanse implements SpendingEvent {
 
 /// @nodoc
 
+class _$SpendingCreateIncomeImpl implements SpendingCreateIncome {
+  const _$SpendingCreateIncomeImpl();
+
+  @override
+  String toString() {
+    return 'SpendingEvent.createIncome()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpendingCreateIncomeImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+}
+
+abstract class SpendingCreateIncome implements SpendingEvent {
+  const factory SpendingCreateIncome() = _$SpendingCreateIncomeImpl;
+}
+
+/// @nodoc
+
+class _$SpendingRemoveExpenseImpl implements SpendingRemoveExpense {
+  const _$SpendingRemoveExpenseImpl({required this.expense});
+
+  @override
+  final ExpenseModel expense;
+
+  @override
+  String toString() {
+    return 'SpendingEvent.removeExpense(expense: $expense)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpendingRemoveExpenseImpl &&
+            (identical(other.expense, expense) || other.expense == expense));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, expense);
+}
+
+abstract class SpendingRemoveExpense implements SpendingEvent {
+  const factory SpendingRemoveExpense({required final ExpenseModel expense}) =
+      _$SpendingRemoveExpenseImpl;
+
+  ExpenseModel get expense;
+}
+
+/// @nodoc
+
 class _$SpendingSetExpenseTitleImpl implements SpendingSetExpenseTitle {
   const _$SpendingSetExpenseTitleImpl({required this.value});
 
@@ -193,6 +250,70 @@ abstract class SpendingSetId implements SpendingEvent {
 
 /// @nodoc
 
+class _$SpendingSetIncomeTitleImpl implements SpendingSetIncomeTitle {
+  const _$SpendingSetIncomeTitleImpl({required this.value});
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'SpendingEvent.setIncomeTitle(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpendingSetIncomeTitleImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+}
+
+abstract class SpendingSetIncomeTitle implements SpendingEvent {
+  const factory SpendingSetIncomeTitle({required final String value}) =
+      _$SpendingSetIncomeTitleImpl;
+
+  String get value;
+}
+
+/// @nodoc
+
+class _$SpendingSetIncomeAmountImpl implements SpendingSetIncomeAmount {
+  const _$SpendingSetIncomeAmountImpl({required this.value});
+
+  @override
+  final String value;
+
+  @override
+  String toString() {
+    return 'SpendingEvent.setIncomeAmount(value: $value)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpendingSetIncomeAmountImpl &&
+            (identical(other.value, value) || other.value == value));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, value);
+}
+
+abstract class SpendingSetIncomeAmount implements SpendingEvent {
+  const factory SpendingSetIncomeAmount({required final String value}) =
+      _$SpendingSetIncomeAmountImpl;
+
+  String get value;
+}
+
+/// @nodoc
+
 class _$SpendingShowCreateExpenseModalDialogImpl
     implements SpendingShowCreateExpenseModalDialog {
   const _$SpendingShowCreateExpenseModalDialogImpl(
@@ -235,6 +356,56 @@ abstract class SpendingShowCreateExpenseModalDialog implements SpendingEvent {
           required final TextEditingController titleController,
           required final TextEditingController amountController}) =
       _$SpendingShowCreateExpenseModalDialogImpl;
+
+  BuildContext get context;
+  TextEditingController get titleController;
+  TextEditingController get amountController;
+}
+
+/// @nodoc
+
+class _$SpendingShowCreateIncomeBottomSheetImpl
+    implements SpendingShowCreateIncomeBottomSheet {
+  const _$SpendingShowCreateIncomeBottomSheetImpl(
+      {required this.context,
+      required this.titleController,
+      required this.amountController});
+
+  @override
+  final BuildContext context;
+  @override
+  final TextEditingController titleController;
+  @override
+  final TextEditingController amountController;
+
+  @override
+  String toString() {
+    return 'SpendingEvent.showCreateIncomeBottomSheet(context: $context, titleController: $titleController, amountController: $amountController)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpendingShowCreateIncomeBottomSheetImpl &&
+            (identical(other.context, context) || other.context == context) &&
+            (identical(other.titleController, titleController) ||
+                other.titleController == titleController) &&
+            (identical(other.amountController, amountController) ||
+                other.amountController == amountController));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, context, titleController, amountController);
+}
+
+abstract class SpendingShowCreateIncomeBottomSheet implements SpendingEvent {
+  const factory SpendingShowCreateIncomeBottomSheet(
+          {required final BuildContext context,
+          required final TextEditingController titleController,
+          required final TextEditingController amountController}) =
+      _$SpendingShowCreateIncomeBottomSheetImpl;
 
   BuildContext get context;
   TextEditingController get titleController;

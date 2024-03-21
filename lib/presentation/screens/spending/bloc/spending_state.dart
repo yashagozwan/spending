@@ -21,6 +21,8 @@ class SpendingState with _$SpendingState {
     @Default(SpendingModel()) SpendingModel spending,
     @Default('') String expanseTitle,
     @Default(0) int expanseAmount,
+    @Default('') String incomeTitle,
+    @Default(0) int incomeAmount,
     @Default([]) List<ExpenseModel> expenses,
     @Default([]) List<IncomeModel> incomes,
   }) = _SpendingState;

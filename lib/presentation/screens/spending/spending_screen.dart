@@ -19,6 +19,8 @@ class _SpendingScreenState extends State<SpendingScreen> {
   late final SpendingBloc _bloc;
   final _expenseTitleController = TextEditingController();
   final _expenseAmountController = TextEditingController();
+  final _incomeTitleController = TextEditingController();
+  final _incomeAmountController = TextEditingController();
 
   void _initial() async {
     _bloc = context.read<SpendingBloc>()..add(const SpendingStarted());
@@ -38,6 +40,22 @@ class _SpendingScreenState extends State<SpendingScreen> {
         ),
       );
     });
+
+    _incomeTitleController.addListener(() {
+      _bloc.add(
+        SpendingSetIncomeTitle(
+          value: _incomeTitleController.text,
+        ),
+      );
+    });
+
+    _incomeAmountController.addListener(() {
+      _bloc.add(
+        SpendingSetIncomeAmount(
+          value: _incomeAmountController.text,
+        ),
+      );
+    });
   }
 
   @override
@@ -50,6 +68,8 @@ class _SpendingScreenState extends State<SpendingScreen> {
   void dispose() {
     _expenseTitleController.dispose();
     _expenseAmountController.dispose();
+    _incomeTitleController.dispose();
+    _incomeAmountController.dispose();
     super.dispose();
   }
 
@@ -86,30 +106,47 @@ class _SpendingScreenState extends State<SpendingScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Text('Total Expense'),
+                  const SizedBox(height: 24),
                   BlocBuilder<SpendingBloc, SpendingState>(
                     builder: (context, state) {
-                      final amount =
+                      final expenseTotal =
                           ExpenseAdapter.calculateAmount(state.expenses);
-                      return Text(
-                        Utils.idr(amount),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+
+                      final incomeTotal =
+                          IncomeAdapter.calculateAmount(state.incomes);
+
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: _cardInfo(
+                              title: 'Expense',
+                              price: expenseTotal,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _cardInfo(
+                              title: 'Income',
+                              price: incomeTotal,
+                            ),
+                          )
+                        ],
                       );
                     },
                   ),
-                  const Text('Total Income'),
-                  BlocBuilder<SpendingBloc, SpendingState>(
-                    builder: (context, state) {
-                      final amount =
+                  const SizedBox(height: 16),
+                  Builder(
+                    builder: (ctx) {
+                      final state = ctx.watch<SpendingBloc>().state;
+
+                      final totalIncome =
                           IncomeAdapter.calculateAmount(state.incomes);
-                      return Text(
-                        Utils.idr(amount),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      final totalExpense =
+                          ExpenseAdapter.calculateAmount(state.expenses);
+
+                      return _cardInfo(
+                        title: 'The rest of the money',
+                        price: totalIncome - totalExpense,
                       );
                     },
                   ),
@@ -151,7 +188,15 @@ class _SpendingScreenState extends State<SpendingScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _bloc.add(
+                              SpendingShowCreateIncomeBottomSheet(
+                                context: context,
+                                titleController: _incomeTitleController,
+                                amountController: _incomeAmountController,
+                              ),
+                            );
+                          },
                           child: const Text('Add Income'),
                         ),
                       ),
@@ -162,50 +207,120 @@ class _SpendingScreenState extends State<SpendingScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          report(
-            title: 'Expenses',
-            child: BlocBuilder<SpendingBloc, SpendingState>(
-              builder: (context, state) {
-                final expenses = state.expenses;
+          Builder(
+            builder: (ctx) {
+              final expenses = ctx.watch<SpendingBloc>().state.expenses;
 
-                if (expenses.isEmpty) {
-                  return const Center(
-                    child: Text('No Report'),
-                  );
-                }
+              return report(
+                title: 'Expenses ${expenses.length}',
+                child: Builder(
+                  builder: (_) {
+                    if (expenses.isEmpty) {
+                      return const Center(
+                        child: Text('No Report'),
+                      );
+                    }
 
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    final expense = expenses[index];
-                    return ListTile(
-                      leading: const CircleAvatar(
-                        child: FaIcon(
-                          FontAwesomeIcons.moneyBill,
-                        ),
-                      ),
-                      dense: true,
-                      title: Text(expense.title),
-                      subtitle: Text(Utils.idr(expense.amount)),
+                    return ListView.separated(
+                      itemBuilder: (context, index) {
+                        final expense = expenses[index];
+                        return ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            child: FaIcon(
+                              FontAwesomeIcons.arrowUp,
+                              size: 15,
+                            ),
+                          ),
+                          dense: true,
+                          title: Text(expense.title),
+                          subtitle: Text(Utils.idr(expense.amount)),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              context
+                                  .read<SpendingBloc>()
+                                  .add(SpendingRemoveExpense(expense: expense));
+                            },
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox();
+                      },
+                      itemCount: expenses.length,
                     );
                   },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox();
+                ),
+                viewMoreCallback: () {},
+              );
+            },
+          ),
+          const SizedBox(height: 16),
+          Builder(
+            builder: (ctx) {
+              final incomes = ctx.watch<SpendingBloc>().state.incomes;
+
+              return report(
+                title: 'Incomes ${incomes.length}',
+                child: Builder(
+                  builder: (_) {
+                    if (incomes.isEmpty) {
+                      return const Center(
+                        child: Text('No Report'),
+                      );
+                    }
+
+                    return ListView.separated(
+                      itemBuilder: (context, index) {
+                        final expense = incomes[index];
+                        return ListTile(
+                          leading: const CircleAvatar(
+                            child: FaIcon(
+                              FontAwesomeIcons.moneyBill,
+                            ),
+                          ),
+                          dense: true,
+                          title: Text(expense.title),
+                          subtitle: Text(Utils.idr(expense.amount)),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox();
+                      },
+                      itemCount: incomes.length,
+                    );
                   },
-                  itemCount: expenses.length,
-                );
-              },
-            ),
-            viewMoreCallback: () {},
+                ),
+                viewMoreCallback: () {},
+              );
+            },
           ),
           const SizedBox(height: 16),
-          report(
-            title: 'Incomes',
-            child: const Center(
-              child: Text('No Report'),
-            ),
-            viewMoreCallback: () {},
+        ],
+      ),
+    );
+  }
+
+  Widget _cardInfo({
+    required String title,
+    required int price,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey.shade400,
+        ),
+      ),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 16),
+          Text(Utils.idr(price)),
         ],
       ),
     );
